@@ -1,0 +1,11 @@
+---
+- name: systemctl restart glance-api service
+  service:
+    name: "{{ glance_api_service_name }}.service"
+    state: "restarted"
+    enabled: true
+  become: true
+  changed_when: false
+  register: restart_glance_api_service
+  failed_when: restart_glance_api_service.failed
+...

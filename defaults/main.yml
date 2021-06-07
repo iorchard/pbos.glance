@@ -1,0 +1,6 @@
+---
+openstack_release: "wallaby"
+keepalived_vip: ""
+glance_password: ""
+glance_port: 9292
+...

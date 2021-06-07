@@ -1,0 +1,24 @@
+---
+- name: DB | create database
+  community.mysql.mysql_db:
+    login_unix_socket: "/run/mysqld/mysqld.sock"
+    login_user: "root"
+    login_password: "{{ mariadb_root_password }}"
+    name: glance
+    state: present
+  delegate_to: "{{ groups['controller'][0] }}"
+  run_once: true
+  no_log: true
+
+- name: DB | set glance user
+  community.mysql.mysql_user:
+    login_unix_socket: "/run/mysqld/mysqld.sock"
+    login_user: "root"
+    login_password: "{{ mariadb_root_password }}"
+    name: "glance"
+    host: "{{ item }}"
+    password: "{{ glance_password }}"
+    priv: "glance.*:ALL,GRANT"
+  loop: "{{ openstack_mariadb_acl_cidr }}"
+  no_log: true
+...
