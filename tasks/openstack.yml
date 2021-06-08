@@ -1,39 +1,39 @@
 ---
-- name: OpenStack | create glance user
+- name: OpenStack | create user
   openstack.cloud.identity_user:
     cloud: pbos
-    name: glance
+    name: "{{ os_service_name }}"
     password: "{{ glance_password }}"
     domain: default
     default_project: service
     state: present
-  delegate_to: "{{ groups['glance'][0] }}"
+  delegate_to: "{{ groups['keystone'][0] }}"
   run_once: true
   no_log: true
 
-- name: OpenStack | add glance user to admin role
+- name: OpenStack | add user to admin role
   openstack.cloud.role_assignment:
     cloud: pbos
-    user: glance
+    user: "{{ os_service_name }}"
     role: admin
     project: service
-  delegate_to: "{{ groups['glance'][0] }}"
+  delegate_to: "{{ groups['keystone'][0] }}"
   run_once: true
 
-- name: OpenStack | create image service for glance
+- name: OpenStack | create service
   openstack.cloud.catalog_service:
     cloud: pbos
-    name: glance
+    name: "{{ os_service_name }}"
     service_type: image
     description: OpenStack Image Service
     state: present
-  delegate_to: "{{ groups['glance'][0] }}"
+  delegate_to: "{{ groups['keystone'][0] }}"
   run_once: true
 
-- name: OpenStack | create endpoint for glance
+- name: OpenStack | create endpoints
   openstack.cloud.endpoint:
     cloud: pbos
-    service: glance
+    service: "{{ os_service_name }}"
     endpoint_interface: "{{ item }}"
     url: "http://{{ keepalived_vip }}:9292"
     region: RegionOne
@@ -42,6 +42,6 @@
     - public
     - internal
     - admin
-  delegate_to: "{{ groups['glance'][0] }}"
+  delegate_to: "{{ groups['keystone'][0] }}"
   run_once: true
 ...

@@ -16,11 +16,11 @@ osbpo_repos:
   - repo: "deb [signed-by=/usr/share/keyrings/osbpo-keyring.gpg] http://osbpo.debian.net/osbpo bullseye-{{ openstack_release }}-backports-nochange main"
     filename: "openstack"
 
-glance_packages:
+packages:
   - glance
 
-glance_api_conf: 
+os_service_conf: 
   - { dest: "/etc/glance/glance-api.conf" }
 
-glance_api_service_name: "glance-api"
+os_systemd_service_name: "glance-api"
 ...

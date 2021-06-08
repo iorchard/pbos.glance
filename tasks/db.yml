@@ -4,21 +4,21 @@
     login_unix_socket: "/run/mysqld/mysqld.sock"
     login_user: "root"
     login_password: "{{ mariadb_root_password }}"
-    name: glance
+    name: "{{ os_service_name }}"
     state: present
-  delegate_to: "{{ groups['controller'][0] }}"
+  delegate_to: "{{ groups['mariadb'][0] }}"
   run_once: true
   no_log: true
 
-- name: DB | set glance user
+- name: DB | set user
   community.mysql.mysql_user:
     login_unix_socket: "/run/mysqld/mysqld.sock"
     login_user: "root"
     login_password: "{{ mariadb_root_password }}"
-    name: "glance"
+    name: "{{ os_service_name }}"
     host: "{{ item }}"
     password: "{{ glance_password }}"
-    priv: "glance.*:ALL,GRANT"
+    priv: "{{ os_service_name }}.*:ALL,GRANT"
   loop: "{{ openstack_mariadb_acl_cidr }}"
   no_log: true
 ...

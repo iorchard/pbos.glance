@@ -1,5 +1,5 @@
 ---
-- name: Setup | copy glance init file
+- name: Setup | copy init file
   ansible.builtin.copy:
     dest: "{{ item.dest }}"
     src: "{{ ansible_distribution | lower }}{{ item.dest }}"
@@ -10,12 +10,12 @@
     - {dest: "/etc/init.d/glance-api"}
   become: true
 
-- name: Setup | template glance-api.conf
+- name: Setup | template configuration
   ansible.builtin.template:
     dest: "{{ item.dest }}"
     src: "{{ ansible_distribution | lower }}{{ item.dest + '.j2' }}"
     owner: "root"
-    group: "glance"
+    group: "{{ os_service_name }}"
     mode: "0640"
     backup: true
   loop:
@@ -23,9 +23,11 @@
     - {dest: "/etc/glance/glance-api-uwsgi-bind.ini"}
   become: true
   notify:
-    - systemctl restart glance-api service
+    - systemctl restart service
 
-- name: Setup | create glance db tables
-  ansible.builtin.shell: su -s /bin/bash glance -c "glance-manage db_sync"
+- name: Setup | create db tables
+  ansible.builtin.shell: su -s /bin/sh -c "glance-manage db_sync" glance
   become: true
+  delegate_to: "{{ groups['glance'][0] }}"
+  run_once: true
 ...

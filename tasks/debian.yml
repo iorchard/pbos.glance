@@ -26,12 +26,12 @@
   become: true
   loop: "{{ osbpo_repos }}"
 
-- name: Debian | Install glance packages
+- name: Debian | Install packages
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
     update_cache: true
     allow_unauthenticated: false
   become: true
-  loop: "{{ glance_packages }}"
+  loop: "{{ packages }}"
 ...
