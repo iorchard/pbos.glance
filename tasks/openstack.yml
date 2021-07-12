@@ -3,13 +3,12 @@
   openstack.cloud.identity_user:
     cloud: pbos
     name: "{{ os_service_name }}"
-    password: "{{ glance_password }}"
+    password: "{{ os_password }}"
     domain: default
     default_project: service
     state: present
   delegate_to: "{{ groups['keystone'][0] }}"
   run_once: true
-  no_log: true
 
 - name: OpenStack | add user to admin role
   openstack.cloud.role_assignment:
@@ -35,13 +34,10 @@
     cloud: pbos
     service: "{{ os_service_name }}"
     endpoint_interface: "{{ item }}"
-    url: "http://{{ keepalived_vip }}:9292"
+    url: "http://{{ keepalived_vip }}:{{ glance_port }}"
     region: RegionOne
     state: present
-  loop:
-    - public
-    - internal
-    - admin
+  loop: "{{ os_endpoint_interface }}"
   delegate_to: "{{ groups['keystone'][0] }}"
   run_once: true
 ...

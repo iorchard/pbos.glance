@@ -6,8 +6,7 @@
     owner: "root"
     group: "root"
     mode: "0755"
-  loop:
-    - {dest: "/etc/init.d/glance-api"}
+  loop: "{{ os_service_init }}"
   become: true
 
 - name: Setup | template configuration
@@ -18,10 +17,9 @@
     group: "{{ os_service_name }}"
     mode: "0640"
     backup: true
-  loop:
-    - {dest: "/etc/glance/glance-api.conf"}
-    - {dest: "/etc/glance/glance-api-uwsgi-bind.ini"}
+  loop: "{{ os_service_conf }}"
   become: true
+  changed_when: true
   notify:
     - systemctl restart service
 
@@ -30,4 +28,20 @@
   become: true
   delegate_to: "{{ groups['glance'][0] }}"
   run_once: true
+
+- name: Setup | get client.glance ceph keyring
+  ansible.builtin.command: ceph auth get-or-create client.glance
+  register: client_glance_keyring
+  become: true
+  delegate_to: "{{ groups['glance'][0] }}"
+  run_once: true
+
+- name: Setup | copy client.glance ceph keyring
+  ansible.builtin.copy:
+    content: "{{ client_glance_keyring.stdout }}\n"
+    dest: "/etc/ceph/ceph.client.glance.keyring"
+    owner: "{{ os_service_name }}"
+    group: "{{ os_service_name }}"
+    mode: "0600"
+  become: true
 ...

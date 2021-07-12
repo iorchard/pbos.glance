@@ -16,10 +16,10 @@
       paths:
         - "../vars"
 
-- name: Main | include glance DB tasks
+- name: Main | include DB tasks
   ansible.builtin.include_tasks: "db.yml"
 
-- name: Main | include glance openstack tasks
+- name: Main | include openstack tasks
   ansible.builtin.include_tasks: "openstack.yml"
 
 - name: Main | include os specific tasks

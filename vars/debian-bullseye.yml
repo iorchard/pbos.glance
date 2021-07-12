@@ -3,6 +3,7 @@ prereq_pkgs:
   - apt-transport-https
   - ca-certificates
   - curl
+  - openstack-pkg-tools
 
 # osbpo apt repo keyring
 osbpo_keyring:
@@ -19,8 +20,13 @@ osbpo_repos:
 packages:
   - glance
 
+os_service_init:
+  - {dest: "/etc/init.d/glance-api"}
+
 os_service_conf: 
-  - { dest: "/etc/glance/glance-api.conf" }
+  - {dest: "/etc/glance/glance-api.conf"}
+  - {dest: "/etc/glance/glance-api-uwsgi.ini"}
+  - {dest: "/etc/glance/glance-api-uwsgi-bind.ini"}
 
 os_systemd_service_name: "glance-api"
 ...

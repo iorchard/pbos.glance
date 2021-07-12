@@ -4,7 +4,7 @@ show_image_direct_url = True
 [cinder]
 [cors]
 [database]
-connection = mysql+pymysql://glance:{{ glance_password }}@{{ keepalived_vip }}/glance
+connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}
 
 [file]
 [glance.store.http.store]
@@ -21,14 +21,15 @@ rbd_store_chunk_size = 8
 
 [image_format]
 [keystone_authtoken]
-auth_url = http://{{ keepalived_vip }}:5000
-project_name = service
-project_domain_name = default
-username = glance
-user_domain_name = default
-www_authenticate_uri = http://{{ keepalived_vip }}:5000
-region_name = regionOne
+www_authenticate_uri = http://{{ keepalived_vip }}:{{ keystone_port }}
+auth_url = http://{{ keepalived_vip }}:{{ keystone_port }}
+memcached_servers = {{ keepalived_vip }}:{{ memcached_port }}
 auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = glance
+password = {{ os_password }}
 
 [oslo_concurrency]
 lock_path = /var/lock/glance
