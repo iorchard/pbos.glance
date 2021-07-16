@@ -28,5 +28,6 @@ os_service_conf:
   - {dest: "/etc/glance/glance-api-uwsgi.ini"}
   - {dest: "/etc/glance/glance-api-uwsgi-bind.ini"}
 
-os_systemd_service_name: "glance-api"
+os_systemd_service_name:
+  - glance-api.service
 ...
