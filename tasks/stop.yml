@@ -1,5 +1,5 @@
 ---
-- name: Main | import common tasks
+- name: Stop | import common tasks
   tags: glance
   ansible.builtin.import_tasks: "common.yml"
 
