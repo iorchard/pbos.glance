@@ -19,6 +19,7 @@ osbpo_repos:
 
 packages:
   - glance
+  - python3-rbd
 
 os_service_init:
   - {dest: "/etc/init.d/glance-api"}
