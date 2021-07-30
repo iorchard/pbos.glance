@@ -1,10 +1,14 @@
 ---
 - name: Start | import common tasks
-  tags: glance
+  tags:
+    - glance
+    - openstack
   ansible.builtin.import_tasks: "common.yml"
 
 - name: Start | start service
-  tags: glance
+  tags:
+    - glance
+    - openstack
   block:
     - name: Start | start service
       ansible.builtin.service:

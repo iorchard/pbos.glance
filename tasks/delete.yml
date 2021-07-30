@@ -1,0 +1,33 @@
+---
+- name: Delete | import common tasks
+  tags:
+    - glance
+    - openstack
+  ansible.builtin.import_tasks: "common.yml"
+
+- name: Delete | purge packages
+  tags:
+    - glance
+    - openstack
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    autoremove: true
+    purge: true
+    state: absent
+  loop: "{{ packages }}"
+  become: true
+
+- name: DB | delete database
+  tags:
+    - glance
+    - openstack
+  community.mysql.mysql_db:
+    login_unix_socket: "/run/mysqld/mysqld.sock"
+    login_user: "root"
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ os_service_name }}"
+    state: absent
+  delegate_to: "{{ groups['mariadb'][0] }}"
+  run_once: true
+  no_log: true
+...

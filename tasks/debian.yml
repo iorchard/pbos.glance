@@ -2,11 +2,15 @@
 - name: Debian | Install prerequisite packages
   apt:
     name: "{{ item }}"
-    state: present
+    state: "{{ apt_state }}"
     update_cache: true
     allow_unauthenticated: false
   loop: "{{ prereq_pkgs }}"
   become: true
+  register: _apt
+  until: not _apt.failed
+  retries: 3
+  delay: 3
 
 - name: Debian | Install openstack apt repo keyring
   ansible.builtin.apt_key:
@@ -29,9 +33,13 @@
 - name: Debian | Install packages
   ansible.builtin.apt:
     name: "{{ item }}"
-    state: present
+    state: "{{ apt_state }}"
     update_cache: true
     allow_unauthenticated: false
+  register: _apt
+  until: not _apt.failed
+  retries: 3
+  delay: 3
   become: true
   loop: "{{ packages }}"
 ...
