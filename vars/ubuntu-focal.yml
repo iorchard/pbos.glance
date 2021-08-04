@@ -9,6 +9,8 @@ prereq_pkgs:
 
 packages:
   - glance
+  - glance-api
+  - glance-common
   - uwsgi-plugin-python3
 
 os_service_init:
