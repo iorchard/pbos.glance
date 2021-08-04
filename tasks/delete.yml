@@ -11,6 +11,7 @@
     - openstack
   ansible.builtin.apt:
     name: "{{ item }}"
+    purge: true
     state: absent
   loop: "{{ packages }}"
   become: true
