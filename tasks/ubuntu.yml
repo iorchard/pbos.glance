@@ -1,0 +1,32 @@
+---
+- name: Ubuntu | Install prerequisite packages
+  apt:
+    name: "{{ item }}"
+    state: "{{ apt_state }}"
+    update_cache: true
+    allow_unauthenticated: false
+  loop: "{{ prereq_pkgs }}"
+  become: true
+  register: _apt
+  until: not _apt.failed
+  retries: 3
+  delay: 3
+
+- name: Ubuntu | add openstack repository
+  ansible.builtin.command: >-
+    add-apt-repository -y cloud-archive:{{ openstack_release }}
+  become: true
+
+- name: Ubuntu | Install packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: "{{ apt_state }}"
+    update_cache: true
+    allow_unauthenticated: false
+  register: _apt
+  until: not _apt.failed
+  retries: 3
+  delay: 3
+  become: true
+  loop: "{{ packages }}"
+...

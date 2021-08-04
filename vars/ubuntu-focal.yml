@@ -1,0 +1,25 @@
+---
+apt_state: "latest"
+prereq_pkgs:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gpg
+  - openstack-pkg-tools
+
+packages:
+  - glance
+  - uwsgi-plugin-python3
+
+os_service_init:
+  - {dest: "/etc/init.d/glance-api"}
+
+os_conf_dir: "/etc/glance"
+os_service_conf: 
+  - {dest: "{{ os_conf_dir }}/glance-api.conf"}
+  - {dest: "{{ os_conf_dir }}/glance-api-uwsgi.ini"}
+  - {dest: "{{ os_conf_dir }}/glance-api-uwsgi-bind.ini"}
+
+os_systemd_service_name:
+  - glance-api.service
+...

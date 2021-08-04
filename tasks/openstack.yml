@@ -9,6 +9,7 @@
     state: present
   delegate_to: "{{ groups['keystone'][0] }}"
   run_once: true
+  no_log: true
 
 - name: OpenStack | add user to admin role
   openstack.cloud.role_assignment:
