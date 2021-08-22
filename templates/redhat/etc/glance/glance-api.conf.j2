@@ -1,0 +1,51 @@
+[DEFAULT]
+show_image_direct_url = True
+bind_host = {{ ansible_host }}
+
+[cinder]
+[cors]
+[database]
+connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}
+
+[file]
+[glance.store.http.store]
+[glance.store.rbd.store]
+[glance.store.swift.store]
+[glance.store.vmware_datastore.store]
+[glance_store]
+stores = file,rbd
+default_store = rbd
+filesystem_store_datadir = /var/lib/glance/images
+rbd_store_pool = images
+rbd_store_user = glance
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rbd_store_chunk_size = 8
+
+[image_format]
+[keystone_authtoken]
+www_authenticate_uri = http://{{ keepalived_vip }}:{{ keystone_port }}
+auth_url = http://{{ keepalived_vip }}:{{ keystone_port }}
+memcached_servers = {{ keepalived_vip }}:{{ memcached_port }}
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = glance
+password = {{ os_password }}
+
+[oslo_concurrency]
+lock_path = /var/lock/glance
+[oslo_messaging_amqp]
+[oslo_messaging_kafka]
+[oslo_messaging_notifications]
+[oslo_messaging_rabbit]
+[oslo_middleware]
+[oslo_policy]
+[paste_deploy]
+flavor = keystone
+
+[profiler]
+[store_type_location_strategy]
+[task]
+[taskflow_executor]
+[wsgi]

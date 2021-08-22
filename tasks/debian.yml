@@ -1,16 +1,14 @@
 ---
 - name: Debian | Install prerequisite packages
-  apt:
+  ansible.builtin.package:
     name: "{{ item }}"
-    state: "{{ apt_state }}"
-    update_cache: true
-    allow_unauthenticated: false
-  loop: "{{ prereq_pkgs }}"
-  become: true
-  register: _apt
-  until: not _apt.failed
+    state: "{{ pkg_state }}"
+  register: _pkg
+  until: not _pkg.failed
   retries: 3
   delay: 3
+  become: true
+  loop: "{{ prereq_pkgs }}"
 
 - name: Debian | Install openstack apt repo keyring
   ansible.builtin.apt_key:
@@ -31,13 +29,11 @@
   loop: "{{ osbpo_repos }}"
 
 - name: Debian | Install packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}"
-    state: "{{ apt_state }}"
-    update_cache: true
-    allow_unauthenticated: false
-  register: _apt
-  until: not _apt.failed
+    state: "{{ pkg_state }}"
+  register: _pkg
+  until: not _pkg.failed
   retries: 3
   delay: 3
   become: true

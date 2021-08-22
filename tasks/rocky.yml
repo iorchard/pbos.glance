@@ -1,5 +1,5 @@
 ---
-- name: Ubuntu | Install prerequisite packages
+- name: Rocky Linux | Install prerequisite packages
   ansible.builtin.package:
     name: "{{ item }}"
     state: "{{ pkg_state }}"
@@ -10,12 +10,17 @@
   become: true
   loop: "{{ prereq_pkgs }}"
 
-- name: Ubuntu | add openstack repository
+- name: Rocky Linux | enable powertools repo
   ansible.builtin.command: >-
-    add-apt-repository -y cloud-archive:{{ openstack_release }}
+    dnf config-manager --set-enabled powertools
   become: true
 
-- name: Ubuntu | Install packages
+- name: Rocky Linux | add openstack repository
+  ansible.builtin.command: >-
+    dnf -y install {{ openstack_repo_rpm }}
+  become: true
+
+- name: Rocky Linux | Install packages
   ansible.builtin.package:
     name: "{{ item }}"
     state: "{{ pkg_state }}"

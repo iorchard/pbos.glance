@@ -1,0 +1,23 @@
+---
+pkg_state: "latest"
+prereq_pkgs:
+  - ca-certificates
+  - curl
+
+packages:
+  - openstack-glance
+  - python3-glance
+
+openstack_repo_rpm: "https://www.rdoproject.org/repos/rdo-release.el8.rpm"
+
+mariadb_service_socket: "/var/lib/mysql/mysql.sock"
+
+os_service_init: []
+
+os_conf_dir: "/etc/glance"
+os_service_conf: 
+  - {dest: "{{ os_conf_dir }}/glance-api.conf"}
+
+os_systemd_service_name:
+  - openstack-glance-api.service
+...
