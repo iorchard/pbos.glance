@@ -29,19 +29,7 @@
   delegate_to: "{{ groups['glance'][0] }}"
   run_once: true
 
-- name: Setup | get client.glance ceph keyring
-  ansible.builtin.command: ceph auth get-or-create client.glance
-  register: client_glance_keyring
-  become: true
-  delegate_to: "{{ groups['glance'][0] }}"
-  run_once: true
-
-- name: Setup | copy client.glance ceph keyring
-  ansible.builtin.copy:
-    content: "{{ client_glance_keyring.stdout }}\n"
-    dest: "/etc/ceph/ceph.client.glance.keyring"
-    owner: "{{ os_service_name }}"
-    group: "{{ os_service_name }}"
-    mode: "0600"
-  become: true
+- name: Setup | include ceph glance keyring task
+  ansible.builtin.include_tasks: ceph_glance_keyring.yml
+  when: '"ceph" in storage_backends'
 ...

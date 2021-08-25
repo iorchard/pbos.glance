@@ -13,13 +13,15 @@ connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepaliv
 [glance.store.swift.store]
 [glance.store.vmware_datastore.store]
 [glance_store]
-stores = file,rbd
-default_store = rbd
+stores = file{{ ("ceph" in storage_backends) | ternary(',rbd', '') }}
+default_store = {{ ("ceph" in storage_backends) | ternary('rbd', 'file') }}
 filesystem_store_datadir = /var/lib/glance/images
+{% if "ceph" in storage_backends %}
 rbd_store_pool = images
 rbd_store_user = glance
 rbd_store_ceph_conf = /etc/ceph/ceph.conf
 rbd_store_chunk_size = 8
+{% endif %}
 
 [image_format]
 [keystone_authtoken]
