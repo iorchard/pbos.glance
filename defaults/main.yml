@@ -12,4 +12,5 @@ os_endpoint_interface:
   - internal
   - admin
 glance_api_processes: 4
+mariadb_ca_cert: "/etc/my.cnf.d/certificates/ca-cert.pem"
 ...

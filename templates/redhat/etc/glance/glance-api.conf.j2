@@ -5,7 +5,7 @@ bind_host = {{ ansible_host }}
 [cinder]
 [cors]
 [database]
-connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}
+connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}?charset=utf8&ssl_ca={{ mariadb_ca_cert }}
 
 [file]
 [glance.store.http.store]
