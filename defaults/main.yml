@@ -4,6 +4,7 @@ keepalived_vip: ""
 os_service_name: "glance"
 db_password: "{{ glance_password }}"
 os_password: "{{ glance_password }}"
+rabbitmq_openstack_password: ~
 memcached_port: 11211
 keystone_port: 5000
 glance_port: 9292
@@ -13,4 +14,6 @@ os_endpoint_interface:
   - admin
 glance_api_processes: 4
 mariadb_ca_cert: "/etc/my.cnf.d/certificates/ca-cert.pem"
+rabbitmq_ca_cert: "/etc/rabbitmq/certificates/ca-cert.pem"
+rabbitmq_tls_port: 5671
 ...

@@ -1,6 +1,7 @@
 [DEFAULT]
 show_image_direct_url = True
 bind_host = {{ ansible_host }}
+transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_tls_port }}
 
 [cinder]
 [cors]
@@ -45,7 +46,11 @@ lock_path = /var/lock/glance
 [oslo_messaging_amqp]
 [oslo_messaging_kafka]
 [oslo_messaging_notifications]
+driver = messagingv2
 [oslo_messaging_rabbit]
+ssl=true
+ssl_version=TLSv1_2
+ssl_ca_file={{ rabbitmq_ca_cert }}
 [oslo_middleware]
 [oslo_policy]
 [paste_deploy]
