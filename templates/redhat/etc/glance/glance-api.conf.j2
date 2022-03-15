@@ -2,8 +2,26 @@
 show_image_direct_url = True
 bind_host = {{ ansible_host }}
 transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_tls_port }}
+enabled_backends = cinder:cinder{{ ("ceph" in storage_backends) | ternary(',ceph:rbd', '') }}
 
+{% if "ceph" in storage_backends %}
+[ceph]
+rbd_store_pool = images
+rbd_store_user = glance
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rbd_store_chunk_size = 8
+rbd_thin_provisioning = True
+{% endif %}
+
+{% if "lvm" in storage_backends %}
 [cinder]
+#filesystem_store_datadir = /var/lib/glance/images
+cinder_store_auth_address = http://{{ keepalived_vip }}:{{ keystone_port }}/v3
+cinder_store_user_name = cinder
+cinder_store_password = {{ cinder_password }}
+cinder_store_project_name = service
+{% endif %}
+
 [cors]
 [database]
 connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepalived_vip }}/{{ os_service_name }}?charset=utf8&ssl_ca={{ mariadb_ca_cert }}
@@ -13,22 +31,10 @@ connection = mysql+pymysql://{{ os_service_name }}:{{ db_password }}@{{ keepaliv
 [glance.store.rbd.store]
 [glance.store.swift.store]
 [glance.store.vmware_datastore.store]
+
 [glance_store]
-stores = cinder{{ ("ceph" in storage_backends) | ternary(',rbd', '') }}
-default_store = {{ ("ceph" in storage_backends) | ternary('rbd', 'cinder') }}
-{% if "lvm" in storage_backends %}
-#filesystem_store_datadir = /var/lib/glance/images
-cinder_store_auth_address = http://{{ keepalived_vip }}:{{ keystone_port }}/v3
-cinder_store_user_name = cinder
-cinder_store_password = {{ cinder_password }}
-cinder_store_project_name = service
-{% endif %}
-{% if "ceph" in storage_backends %}
-rbd_store_pool = images
-rbd_store_user = glance
-rbd_store_ceph_conf = /etc/ceph/ceph.conf
-rbd_store_chunk_size = 8
-{% endif %}
+default_backend = {{ ("ceph" in storage_backends) | ternary('ceph', 'cinder') }}
+
 [image_format]
 [keystone_authtoken]
 www_authenticate_uri = http://{{ keepalived_vip }}:{{ keystone_port }}
