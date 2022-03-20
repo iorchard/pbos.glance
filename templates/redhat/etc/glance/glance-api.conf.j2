@@ -13,14 +13,11 @@ rbd_store_chunk_size = 8
 rbd_thin_provisioning = True
 {% endif %}
 
-{% if "lvm" in storage_backends %}
 [cinder]
-#filesystem_store_datadir = /var/lib/glance/images
 cinder_store_auth_address = http://{{ keepalived_vip }}:{{ keystone_port }}/v3
 cinder_store_user_name = cinder
 cinder_store_password = {{ cinder_password }}
 cinder_store_project_name = service
-{% endif %}
 
 [cors]
 [database]
