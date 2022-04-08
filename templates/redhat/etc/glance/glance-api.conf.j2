@@ -1,5 +1,5 @@
 [DEFAULT]
-show_image_direct_url = True
+show_image_direct_url = false
 bind_host = {{ ansible_host }}
 transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_tls_port }}
 enabled_backends = cinder:cinder{{ ("ceph" in storage_backends) | ternary(',ceph:rbd', '') }}
