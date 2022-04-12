@@ -2,7 +2,7 @@
 show_image_direct_url = false
 bind_host = {{ ansible_host }}
 transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_tls_port }}
-enabled_backends = {{ ('lvm' in storage_backends) | ternary('cinder:cinder,', '') }}{{ ("ceph" in storage_backends) | ternary('ceph:rbd', '') }}
+enabled_backends = {{ ('lvm' in storage_backends) | ternary('cinder:cinder', '') }}{{ ("ceph" in storage_backends) | ternary(',ceph:rbd', '') }}
 
 {% if "ceph" in storage_backends %}
 [ceph]
