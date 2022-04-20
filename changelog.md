@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.1 - 2022-04-08
+## 1.0.1 - 2022-04-20
 
 * Config: Modify glance-api.conf
 
