@@ -23,6 +23,15 @@
   notify:
     - systemctl restart service
 
+- name: Setup | create oslo concurrency lock directory
+  ansible.builtin.file:
+    path: "/var/lock/glance"
+    state: directory
+    mode: "0755"
+    owner: "{{ os_service_name }}"
+    group: "{{ os_service_name }}"
+  become: true
+
 - name: Setup | create db tables
   ansible.builtin.shell: su -s /bin/sh -c "glance-manage db_sync" glance
   become: true

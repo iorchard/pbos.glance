@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.2 - 2022-04-29
+
+* Config: Modify glance-api.conf
+
+  - set os_glance_tasks_store and os_glance_staging_store for multiple stores
+
+* Tasks: Create oslo concurrency lock directory
+
+  - create /var/lock/glance directory 
+
 ## 1.0.1 - 2022-04-08
 
 * Config: Modify glance-api.conf
