@@ -17,4 +17,5 @@ glance_api_processes: 4
 mariadb_ca_cert: "/etc/my.cnf.d/certificates/ca-cert.pem"
 rabbitmq_ca_cert: "/etc/rabbitmq/certificates/ca-cert.pem"
 rabbitmq_tls_port: 5671
+enabled_backends: "{{ storage_backends | map('extract', {'lvm': 'cinder:cinder', 'ceph': 'ceph:rbd'}) | list |join }}"
 ...
