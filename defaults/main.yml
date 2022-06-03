@@ -10,9 +10,9 @@ memcached_port: 11211
 keystone_port: 5000
 glance_port: 9292
 os_endpoint_interface:
-  - public
-  - internal
-  - admin
+  - { name: 'public', url: "http://{{ keepalived_vip_svc | ternary(keepalived_vip_svc, keepalived_vip) }}:{{ glance_port }}" }
+  - { name: 'internal', url: "http://{{ keepalived_vip }}:{{ glance_port }}" }
+  - { name: 'admin', url: "http://{{ keepalived_vip }}:{{ glance_port }}" }
 glance_api_processes: 4
 mariadb_ca_cert: "/etc/my.cnf.d/certificates/ca-cert.pem"
 rabbitmq_ca_cert: "/etc/rabbitmq/certificates/ca-cert.pem"

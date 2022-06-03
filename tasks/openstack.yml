@@ -34,8 +34,8 @@
   openstack.cloud.endpoint:
     cloud: pbos
     service: "{{ os_service_name }}"
-    endpoint_interface: "{{ item }}"
-    url: "http://{{ keepalived_vip }}:{{ glance_port }}"
+    endpoint_interface: "{{ item.name }}"
+    url: "{{ item.url }}"
     region: RegionOne
     state: present
   loop: "{{ os_endpoint_interface }}"
