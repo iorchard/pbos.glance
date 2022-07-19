@@ -1,6 +1,6 @@
 [DEFAULT]
 log_dir = /var/log/glance
-show_image_direct_url = false
+show_image_direct_url = true
 bind_host = {{ ansible_host }}
 transport_url = rabbit://openstack:{{ rabbitmq_openstack_password }}@{{ keepalived_vip }}:{{ rabbitmq_tls_port }}
 enabled_backends = {{ enabled_backends }}
