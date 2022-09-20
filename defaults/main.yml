@@ -9,6 +9,7 @@ rabbitmq_openstack_password: ~
 memcached_port: 11211
 keystone_port: 5000
 glance_port: 9292
+glance_workers: 4
 os_endpoint_interface:
   - { name: 'public', url: "http://{{ keepalived_vip_svc | ternary(keepalived_vip_svc, keepalived_vip) }}:{{ glance_port }}" }
   - { name: 'internal', url: "http://{{ keepalived_vip }}:{{ glance_port }}" }
