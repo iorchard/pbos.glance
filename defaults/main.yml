@@ -19,4 +19,11 @@ mariadb_ca_cert: "/etc/my.cnf.d/certificates/ca-cert.pem"
 rabbitmq_ca_cert: "/etc/rabbitmq/certificates/ca-cert.pem"
 rabbitmq_tls_port: 5671
 enabled_backends: "{{ storage_backends | map('extract', {'lvm': 'cinder:cinder', 'ceph': 'ceph:rbd'}) | list |join }}"
+# oslo messaging rabbit config
+rabbit_retry_interval: 1
+rabbit_retry_backoff: 2
+rabbit_interval_max: 300
+rabbit_quorum_queue: True
+heartbeat_timeout_threshold: 60
+heartbeat_rate: 2
 ...
