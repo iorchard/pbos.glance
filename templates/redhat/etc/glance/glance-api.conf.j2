@@ -14,7 +14,7 @@ rbd_store_chunk_size = 8
 rbd_thin_provisioning = True
 {% endif %}
 
-{% if "lvm" in storage_backends %}
+{% if "lvm" in storage_backends or "lightos" in storage_backends %}
 [cinder]
 cinder_store_auth_address = http://{{ keepalived_vip }}:{{ keystone_port }}/v3
 cinder_store_user_name = cinder

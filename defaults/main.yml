@@ -18,7 +18,7 @@ glance_api_processes: 4
 mariadb_ca_cert: "/etc/my.cnf.d/certificates/ca-cert.pem"
 rabbitmq_ca_cert: "/etc/rabbitmq/certificates/ca-cert.pem"
 rabbitmq_tls_port: 5671
-enabled_backends: "{{ storage_backends | map('extract', {'lvm': 'cinder:cinder', 'ceph': 'ceph:rbd'}) | list |join }}"
+enabled_backends: "{{ storage_backends | map('extract', {'ceph': 'ceph:rbd', 'lvm': 'cinder:cinder', 'lightos': 'cinder:cinder'})|list|unique|join(',') }}"
 # oslo messaging rabbit config
 rabbit_retry_interval: 1
 rabbit_retry_backoff: 2
